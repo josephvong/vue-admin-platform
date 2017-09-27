@@ -48,10 +48,11 @@ const user = {
     LoginByUsername({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
-          const data = response.data
-          setToken(response.data.token)
-          commit('SET_TOKEN', data.token)
+        // 此‘loginByUsername()’函数为 从 ‘api/login’中载入的接口调用函数（本项目api通过mock来模拟）
+        loginByUsername(username, userInfo.password).then(response => { // loginByUsername()传入用户名密码
+          const data = response.data // response.data是mock的login.js中根据提交的uername 返回对应的 用户信息（此步骤正常用服务器返回）
+          setToken(response.data.token) // 每次登陆用mock返回的 token（用户名） 在浏览器中设置cookie，cookie为‘Admin-Token:用户名’
+          commit('SET_TOKEN', data.token) // 再在vuex 中 记录（设置）token
           resolve()
         }).catch(error => {
           reject(error)
